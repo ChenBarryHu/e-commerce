@@ -1,13 +1,19 @@
 from flask import render_template, session, request, redirect, url_for, flash
 from .forms import RegistrationForm, LoginForm
 from .models import User
-from flask_bcrypt import Bcrypt
 from shop import app, bcrypt, db
+from shop.products.models import Addproduct
+
+import os
 
 
 @app.route('/')
-def home():
-    return render_template('admin/index.html', title='Admin Page')
+def admin():
+    if 'email' not in session:
+        flash('Please log in first', 'danger')
+        return redirect(url_for('login'))
+    products = Addproduct.query.all()
+    return render_template('admin/index.html', title='Admin Page', products=products)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -22,7 +28,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash(f'Welcome {form.name.data} Thanks for registering', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('admin'))
     return render_template('admin/register.html', form=form, title="Registration Page")
 
 
@@ -35,7 +41,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             session['email'] = form.email.data
             flash(f'Welcome {user.name}, you are logged in now', 'success')
-            return redirect(request.args.get('next') or url_for('home'))
+            return redirect(request.args.get('next') or url_for('admin'))
         else:
             flash('wrong password, please try again', 'danger')
     return render_template('admin/login.html', form=form, title='Login Page')

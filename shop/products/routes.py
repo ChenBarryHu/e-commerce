@@ -7,6 +7,9 @@ import secrets
 
 @app.route('/addbrand', methods=['GET', 'POST'])
 def addbrand():
+    if 'email' not in session:
+        flash('Please log in first', 'danger')
+        return redirect(url_for('login'))
     if request.method == "POST":
         brandname = request.form.get('brand')
         brand = Brand(name=brandname)
@@ -19,6 +22,9 @@ def addbrand():
 
 @app.route('/addcat', methods=['GET', 'POST'])
 def addcat():
+    if 'email' not in session:
+        flash('Please log in first', 'danger')
+        return redirect(url_for('login'))
     if request.method == "POST":
         catname = request.form.get('category')
         cat = Category(name=catname)
@@ -31,6 +37,9 @@ def addcat():
 
 @app.route('/addproduct', methods=['GET', 'POST'])
 def addproduct():
+    if 'email' not in session:
+        flash('Please log in first', 'danger')
+        return redirect(url_for('login'))
     brands = Brand.query.all()
     categories = Category.query.all()
     form = Addproducts(request.form)
