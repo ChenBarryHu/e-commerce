@@ -5,6 +5,36 @@ from .forms import Addproducts
 import secrets
 
 
+@app.route('/updatebrand/<int:id>', methods=['GET', 'POST'])
+def updatebrand(id):
+    if 'email' not in session:
+        flash('Please log in first', 'danger')
+        return redirect(url_for('login'))
+    updatebrand = Brand.query.get_or_404(id)
+    brand = request.form.get('brand')
+    if request.method == "POST":
+        updatebrand.name = brand
+        db.session.commit()
+        flash('The brand has been updated', 'success')
+        return redirect(url_for('brands'))
+    return render_template('products/updatebrand.html', title='Update Brand Page', updatebrand=updatebrand)
+
+
+@app.route('/updatecategory/<int:id>', methods=['GET', 'POST'])
+def updatecategory(id):
+    if 'email' not in session:
+        flash('Please log in first', 'danger')
+        return redirect(url_for('login'))
+    updatecategory = Category.query.get_or_404(id)
+    category = request.form.get('category')
+    if request.method == "POST":
+        updatecategory.name = category
+        db.session.commit()
+        flash('The category has been updated', 'success')
+        return redirect(url_for('categories'))
+    return render_template('products/updatebrand.html', title='Update Category Page', updatecategory=updatecategory)
+
+
 @app.route('/addbrand', methods=['GET', 'POST'])
 def addbrand():
     if 'email' not in session:
