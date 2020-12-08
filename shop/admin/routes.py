@@ -16,15 +16,6 @@ def admin():
     return render_template('admin/index.html', title='Admin Page', products=products)
 
 
-@app.route('/')
-def home():
-    if 'email' not in session:
-        flash('Please log in first', 'danger')
-        return redirect(url_for('login'))
-    products = Addproduct.query.all()
-    return render_template('admin/index.html', title='Admin Page', products=products)
-
-
 @app.route('/brands')
 def brands():
     if 'email' not in session:
