@@ -14,7 +14,7 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/brands">Brands</a>
@@ -39,32 +39,35 @@
     </nav>
 </div>
 <div class="container">
-    <table class="table table-sm table-striped">
+    <table class="table table-sm table-striped table-hover">
         <thead>
             <tr>
                 <th>Sr</th>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Discount</th>
-                <th>Brand</th>
-                <th>Image</th>
+                <th>Name</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
         </thead>
         <tbody>
-            {% for product in products %}
+            {% if brands %}
+            {% for brand in brands %}
             <tr>
                 <td>{{loop.index}}</td>
-                <td>{{product.name}}</td>
-                <td>{{product.price}}</td>
-                <td>{{product.discount}} %</td>
-                <td>{{product.brand.name}}</td>
-                <td><img width='30' src="{{url_for('static', filename='images/'+product.image_1)}}"></td>
-                <td>Edit</td>
-                <td>Delete</td>
+                <td>{{brand.name}}</td>
+                <td><a href="" class="btn btn-sm btn-outline-info">Edit</a></td>
+                <td><a href="" class="btn btn-sm btn-outline-danger">Delete</a></td>
             </tr>
             {% endfor %}
+            {% else %}
+            {% for category in categories %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{category.name}}</td>
+                <td><a href="" class="btn btn-sm btn-outline-info">Edit</a></td>
+                <td><a href="" class="btn btn-sm btn-outline-danger">Delete</a></td>
+            </tr>
+            {% endfor %}
+            {% endif %}
         </tbody>
     </table>
 </div>
