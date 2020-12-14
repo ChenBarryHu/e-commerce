@@ -22,3 +22,4 @@ bcrypt = Bcrypt(app)
 if True:
     from shop.products import routes
     from shop.admin import routes
+    from shop.carts import carts

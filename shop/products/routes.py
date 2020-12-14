@@ -5,7 +5,7 @@ from .forms import Addproducts
 import secrets
 import os
 
-__productperpage = 4
+__productperpage = 8
 
 
 @app.route('/')
