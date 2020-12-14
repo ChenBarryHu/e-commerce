@@ -25,6 +25,7 @@ def AddCart():
                 # 'price': product.price,
                 'discount': product.discount,
                 'color': colors,
+                'price': str(product.price),
                 'quantity': quantity,
                 'image': product.image_1}}
 
@@ -44,3 +45,10 @@ def AddCart():
         print(e)
     finally:
         return redirect(request.referrer)
+
+
+@app.route('/carts')
+def getCart():
+    if 'Shoppingcart' not in session:
+        return redirect(request.referrer)
+    return render_template('products/carts.html')
