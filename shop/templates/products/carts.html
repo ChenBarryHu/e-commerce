@@ -8,10 +8,11 @@
                 <th>Name</th>
                 <th>Color</th>
                 <th>Price</th>
+                <th>Quantity</th>
                 <th>Discount</th>
                 <th>Subtotal</th>
                 <th>Update</th>
-                <th>Delete</th>
+                <th>Remove</th>
             </thead>
             <tbody>
                 {% for key, product in session['Shoppingcart'].items() %}
@@ -21,6 +22,7 @@
                     <td>{{product.name}}</td>
                     <td>{{product.color}}</td>
                     <td>{{product.price}}</td>
+                    <td>{{product.quantity}}</td>
                     {% if product.discount > 0 %}
                     <td>{{product.discount}} % is {{discount}}</td>
                     {% else %}
@@ -32,6 +34,16 @@
                     <td><a href="">Remove</a></td>
                 </tr>
                 {% endfor %}
+                <tr>
+                    <td></td>
+                    <td><a href="/">Continue shopping</a></td>
+                    <td colspan="3">
+                        <h4>Tax: ${{tax}}</h4>
+                    </td>
+                    <td colspan="3">
+                        <h4>Grand Total: ${{grandtotal}}</h4>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
