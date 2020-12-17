@@ -56,12 +56,12 @@
                             <td>{{"%0.2f"|format((subtotal|float)-discount|float)}}</td>
                             <td><button type="submit" class="btn btn-sm btn-info">Update</button></td>
                         </form>
-                        <td><a href="">Remove</a></td>
+                        <td><a href="{{url_for('deleteitem', id=key)}}" class="btn btn-sm btn-danger">Remove</a></td>
                     </tr>
                     {% endfor %}
                     <tr>
                         <td></td>
-                        <td><a href="/">Continue shopping</a></td>
+                        <td><a href="/">Check out</a></td>
                         <td colspan="3">
                             <h4>Tax: ${{tax}}</h4>
                         </td>

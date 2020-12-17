@@ -1,6 +1,7 @@
 from flask import render_template, session, request, redirect, url_for, flash, current_app
 from shop import db, app
 from shop.products.models import Addproduct
+from shop.products.routes import brands, categories
 
 
 def MergeDicts(dict1, dict2):
@@ -50,8 +51,8 @@ def AddCart():
 
 @app.route('/carts')
 def getCart():
-    if 'Shoppingcart' not in session:
-        return redirect(request.referrer)
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+        return redirect(url_for('home'))
     subtotal = 0
     grandtotal = 0
     for key, product in session['Shoppingcart'].items():
@@ -61,7 +62,7 @@ def getCart():
         subtotal -= discount
         tax = ("%.2f" % (.06 * float(subtotal)))
         grandtotal = float("%.2f" % (1.06 * subtotal))
-    return render_template('products/carts.html', tax=tax, grandtotal=grandtotal, discount=discount)
+    return render_template('products/carts.html', tax=tax, grandtotal=grandtotal, discount=discount, brands=brands(), categories=categories())
 
 
 @app.route('/emptycart')
@@ -73,9 +74,9 @@ def empty_cart():
         print(e)
 
 
-@app.route('/updatecart/<int:code>', methods=['POST'])
+@app.route('/updatecart/<int:code>')
 def updatecart(code):
-    if 'Shoppingcart' not in session and len(session['Shoppingcart']) <= 0:
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
         return redirect(url_for('home'))
     if request.method == "POST":
         quantity = request.form.get('quantity')
@@ -93,3 +94,18 @@ def updatecart(code):
             return redirect(url_for('getCart'))
 
     return
+
+
+@app.route('/deleteitem/<int:id>')
+def deleteitem(id):
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+        return redirect(url_for('home'))
+    try:
+        session.modified = True
+        for key, item in session['Shoppingcart'].items():
+            if int(key) == id:
+                session['Shoppingcart'].pop(key, None)
+                return redirect(url_for('getCart'))
+    except Exception as e:
+        print(e)
+        return redirect(url_for('getCart'))
