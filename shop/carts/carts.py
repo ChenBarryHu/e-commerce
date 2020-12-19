@@ -21,20 +21,28 @@ def AddCart():
         colors = request.form.get('colors')
         product = Addproduct.query.filter_by(id=product_id).first()
         if product and quantity and colors and request.method == "POST":
-            DictItems = {product_id: {
-                'name': product.name,
-                # 'price': product.price,
-                'discount': product.discount,
-                'color': colors,
-                'price': str(product.price),
-                'quantity': quantity,
-                'image': product.image_1,
-                'colors': product.colors}}
+            DictItems = {
+                product_id:
+                {
+                    'name': product.name,
+                    'discount': product.discount,
+                    'color': colors,
+                    'price': str(product.price),
+                    'quantity': quantity,
+                    'image': product.image_1,
+                    'colors': product.colors
+                }
+            }
 
             if 'Shoppingcart' in session:
+                print('product_id: ', product_id)
                 print(session['Shoppingcart'])
                 if product_id in session['Shoppingcart']:
-                    print("This product is already in your cart")
+                    for key, item in session['Shoppingcart'].items():
+                        if int(key) == int(product_id):
+                            session.modified = True
+                            item['quantity'] = int(item['quantity']) + 1
+
                 else:
                     session['Shoppingcart'] = MergeDicts(
                         session['Shoppingcart'], DictItems)
@@ -65,16 +73,16 @@ def getCart():
     return render_template('products/carts.html', tax=tax, grandtotal=grandtotal, discount=discount, brands=brands(), categories=categories())
 
 
-@app.route('/emptycart')
-def empty_cart():
+@app.route('/clearcart')
+def clearcart():
     try:
-        session.clear()
+        session.pop('Shoppingcart', None)
         return redirect(url_for('home'))
     except Exception as e:
         print(e)
 
 
-@app.route('/updatecart/<int:code>')
+@app.route('/updatecart/<int:code>', methods=['POST'])
 def updatecart(code):
     if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
         return redirect(url_for('home'))
