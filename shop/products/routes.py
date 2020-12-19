@@ -8,27 +8,31 @@ import os
 __productperpage = 8
 
 
+def brands():
+    brands = Brand.query.join(
+        Addproduct, (Brand.id == Addproduct.brand_id)).all()
+    return brands
+
+
+def categories():
+    categories = Category.query.join(
+        Addproduct, (Category.id == Addproduct.category_id)).all()
+    return categories
+
+
 @app.route('/')
 def home():
     page = request.args.get('page', 1, type=int)
     products = Addproduct.query.filter(
         Addproduct.stock > 0).paginate(page=page, per_page=__productperpage)
-    categories = Category.query.join(
-        Addproduct, (Category.id == Addproduct.category_id)).all()
-    brands = Brand.query.join(
-        Addproduct, (Brand.id == Addproduct.brand_id)).all()
     print(brands)
-    return render_template('products/index.html', products=products, brands=brands, categories=categories)
+    return render_template('products/index.html', products=products, brands=brands(), categories=categories())
 
 
 @app.route('/product/<int:id>')
 def single_page(id):
     product = Addproduct.query.get_or_404(id)
-    categories = Category.query.join(
-        Addproduct, (Category.id == Addproduct.category_id)).all()
-    brands = Brand.query.join(
-        Addproduct, (Brand.id == Addproduct.brand_id)).all()
-    return render_template('products/single_page.html', product=product, brands=brands, categories=categories)
+    return render_template('products/single_page.html', product=product, brands=brands(), categories=categories())
 
 
 @app.route('/brand/<int:id>')
@@ -36,11 +40,7 @@ def get_brand(id):
     page = request.args.get('page', 1, type=int)
     product_for_brand = Addproduct.query.filter_by(
         brand_id=id).paginate(page=page, per_page=__productperpage)
-    brands = Brand.query.join(
-        Addproduct, (Brand.id == Addproduct.brand_id)).all()
-    categories = Category.query.join(
-        Addproduct, (Category.id == Addproduct.category_id)).all()
-    return render_template('products/index.html', product_for_brand=product_for_brand, brands=brands, categories=categories, brand_id=id)
+    return render_template('products/index.html', product_for_brand=product_for_brand, brands=brands(), categories=categories(), brand_id=id)
 
 
 @app.route('/category/<int:id>')
@@ -49,11 +49,7 @@ def get_category(id):
     # category = Category.query.filter_by(id=id).first_or_404()
     product_for_category = Addproduct.query.filter_by(
         category_id=id).paginate(page=page, per_page=__productperpage)
-    brands = Brand.query.join(
-        Addproduct, (Brand.id == Addproduct.brand_id)).all()
-    categories = Category.query.join(
-        Addproduct, (Category.id == Addproduct.category_id)).all()
-    return render_template('products/index.html', product_for_category=product_for_category, brands=brands, categories=categories, category_id=id)
+    return render_template('products/index.html', product_for_category=product_for_category, brands=brands(), categories=categories(), category_id=id)
 
 
 @app.route('/updatebrand/<int:id>', methods=['GET', 'POST'])
