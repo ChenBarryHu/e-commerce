@@ -12,9 +12,9 @@ def user_loader(user_id):
 class Customer(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=False)
-    username = db.Column(db.String(50), unique=True)
+    username = db.Column(db.String(180), unique=True)
     email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(50), unique=False)
+    password = db.Column(db.String(180), unique=False)
     country = db.Column(db.String(50), unique=False)
     state = db.Column(db.String(50), unique=False)
     city = db.Column(db.String(50), unique=False)

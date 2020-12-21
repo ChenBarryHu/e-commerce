@@ -45,7 +45,7 @@ def customer_register():
             name=form.name.data,
             username=form.username.data,
             email=form.email.data,
-            password=hash_password,
+            password=hash_password.decode('ascii'),
             country=form.country.data,
             state=form.state.data,
             contact=form.contact.data,
@@ -65,6 +65,7 @@ def customer_login():
     form = CustomerLoginForm()
     if request.method == "POST":
         user = Customer.query.filter_by(email=form.email.data).first()
+        user_password = user.password.encode('ascii')
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             flash('You are logged in.', 'success')
