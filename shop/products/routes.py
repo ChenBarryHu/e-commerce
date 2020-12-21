@@ -60,7 +60,7 @@ def products_by_category(id):
 
 @mgmt_bp.route('/addbrand', methods=['GET', 'POST'])
 def add_brand():
-    if 'email' not in session:
+    if 'admin_email' not in session:
         flash('Please log in first', 'danger')
         return redirect(url_for('management.login'))
     if request.method == "POST":
@@ -75,7 +75,7 @@ def add_brand():
 
 @mgmt_bp.route('/addcategory', methods=['GET', 'POST'])
 def add_category():
-    if 'email' not in session:
+    if 'admin_email' not in session:
         flash('Please log in first', 'danger')
         return redirect(url_for('management.login'))
     if request.method == "POST":
@@ -90,7 +90,7 @@ def add_category():
 
 @mgmt_bp.route('/addproduct', methods=['GET', 'POST'])
 def add_product():
-    if 'email' not in session:
+    if 'admin_email' not in session:
         flash('Please log in first', 'danger')
         return redirect(url_for('login'))
     brands = Brand.query.all()
@@ -135,7 +135,7 @@ def add_product():
 
 @mgmt_bp.route('/updatebrand/<int:id>', methods=['GET', 'POST'])
 def update_brand(id):
-    if 'email' not in session:
+    if 'admin_email' not in session:
         flash('Please log in first', 'danger')
         return redirect(url_for('management.login'))
     update_brand = Brand.query.get_or_404(id)
@@ -150,7 +150,7 @@ def update_brand(id):
 
 @mgmt_bp.route('/updatecategory/<int:id>', methods=['GET', 'POST'])
 def update_category(id):
-    if 'email' not in session:
+    if 'admin_email' not in session:
         flash('Please log in first', 'danger')
         return redirect(url_for('login'))
     update_category = Category.query.get_or_404(id)

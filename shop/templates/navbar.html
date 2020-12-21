@@ -55,13 +55,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{url_for('customerLogin')}}" class="nav-link">
+                    <a href="{{url_for('customer_login')}}" class="nav-link">
                         Login
                     </a>
                 </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('getCart')}}">Cart
+                    <a class="nav-link" href="{{url_for('get_cart')}}">Cart
                         ({{session['Shoppingcart']|length}})</a>
                 </li>
             </ul>

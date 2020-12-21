@@ -25,7 +25,7 @@ class Customer(db.Model, UserMixin):
     date_created = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow)
 
-    def __repr(self):
+    def __repr__(self):
         return '<Customer %r>' % self.name
 
 
@@ -52,9 +52,9 @@ class CustomerOrder(db.Model):
     customer_id = db.Column(db.Integer, unique=False, nullable=False)
     date_create = db.Column(
         db.DateTime, default=datetime.utcnow, nullable=False)
-    orders = db.Column(JsonEncodedDict)
+    purchased_items = db.Column(JsonEncodedDict)
 
-    def __rept__(self):
+    def __repr__(self):
         return '<CustomerOrder %r>' % self.invoice
 
 

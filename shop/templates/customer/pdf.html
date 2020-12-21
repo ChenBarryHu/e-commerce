@@ -20,10 +20,10 @@
         <div class="row">
             <div class="col-md-12">
                 <b>
-                    Invoice: {{orders.invoice}}
+                    Invoice: {{order.invoice}}
                 </b>
                 <br>
-                Status: {{orders.status}}
+                Status: {{order.status}}
                 <br>
                 Customer name: {{customer.name}}
                 <br>
@@ -43,13 +43,13 @@
                         <th>Subtotal</th>
                     </thead>
                     <tbody>
-                        {% for key, product in orders.orders.items() %}
+                        {% for key, product in order.purchased_items.items() %}
                         {% set discount = "%0.2f" | format((product.discount/100) * product.price|float *
                         product.quantity|int) %}
                         <tr>
                             <td>{{loop.index}}</td>
                             <td>{{product.name}}</td>
-                            <form action="{{url_for('updatecart', code=key)}}" method="post">
+                            <form action="{{url_for('update_cart', code=key)}}" method="post">
                                 <td>{{product.color|capitalize}}</td>
                                 <td>{{product.price}}</td>
                                 <td>

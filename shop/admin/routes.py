@@ -11,7 +11,7 @@ mgmt_bp = Blueprint('management', __name__, url_prefix='/management')
 
 @mgmt_bp.route('/')
 def admin():
-    if 'email' not in session:
+    if 'admin_email' not in session:
         flash('Please log in first', 'danger')
         return redirect(url_for('management.login'))
     products = Product.query.all()
@@ -20,7 +20,7 @@ def admin():
 
 @mgmt_bp.route('/brands')
 def brands():
-    if 'email' not in session:
+    if 'admin_email' not in session:
         flash('Please log in first', 'danger')
         return redirect(url_for('management.login'))
     brands = Brand.query.order_by(Brand.id.desc()).all()
@@ -29,7 +29,7 @@ def brands():
 
 @mgmt_bp.route('/categories')
 def categories():
-    if 'email' not in session:
+    if 'admin_email' not in session:
         flash('Please log in first', 'danger')
         return redirect(url_for('management.login'))
     categories = Category.query.order_by(Category.id.desc()).all()
@@ -59,7 +59,7 @@ def login():
     if request.method == 'POST' and form.validate():
         admin = Admin.query.filter_by(email=form.email.data).first()
         if admin and bcrypt.check_password_hash(admin.password, form.password.data):
-            session['email'] = form.email.data
+            session['admin_email'] = form.email.data
             flash(f'Welcome {admin.name}, you are logged in now', 'success')
             return redirect(request.args.get('next') or url_for('management.admin'))
         else:
@@ -69,5 +69,5 @@ def login():
 
 @mgmt_bp.route('/logout', methods=['GET', 'POST'])
 def logout():
-    session.pop('email')
+    session.pop('admin_email')
     return redirect(request.args.get('next') or url_for('management.admin'))
