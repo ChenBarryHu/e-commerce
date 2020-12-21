@@ -5,11 +5,13 @@ from flask_uploads import IMAGES, UploadSet, configure_uploads, patch_request_cl
 import os
 from flask_msearch import Search
 from flask_login import LoginManager
+from flask_migrate import Migrate
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myshop.db'
-app.config['SECRET_KEY'] = 'sdfsdfsdwrt435342sdf'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myshop.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:hu384623@localhost:5433/shop'
+app.config['SECRET_KEY'] = 'sdfsdfsdwrt435342sasddf'
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'static/images')
 
@@ -19,6 +21,7 @@ configure_uploads(app, photos)
 patch_request_class(app)        # 16 megabytes
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 search = Search()
 search.init_app(app)
