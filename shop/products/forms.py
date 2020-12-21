@@ -2,7 +2,7 @@ from flask_wtf.file import FileAllowed, FileField, FileRequired
 from wtforms import Form, IntegerField, StringField, BooleanField, TextAreaField, validators, DecimalField
 
 
-class Addproducts(Form):
+class ProductForm(Form):
     name = StringField('Name', [validators.DataRequired()])
     price = DecimalField('Price', [validators.DataRequired()])
     discount = IntegerField('Discount', default=0)

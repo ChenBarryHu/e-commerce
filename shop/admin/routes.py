@@ -2,7 +2,7 @@ from flask import render_template, session, request, redirect, url_for, flash, B
 from .forms import RegistrationForm, LoginForm
 from .models import Admin
 from shop import app, bcrypt, db
-from shop.products.models import Addproduct, Brand, Category
+from shop.products.models import Product, Brand, Category
 
 import os
 
@@ -14,7 +14,7 @@ def admin():
     if 'email' not in session:
         flash('Please log in first', 'danger')
         return redirect(url_for('management.login'))
-    products = Addproduct.query.all()
+    products = Product.query.all()
     return render_template('admin/index.html', title='Admin Page', products=products)
 
 

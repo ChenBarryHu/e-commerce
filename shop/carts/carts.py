@@ -1,6 +1,6 @@
 from flask import render_template, session, request, redirect, url_for, flash, current_app
 from shop import db, app
-from shop.products.models import Addproduct
+from shop.products.models import Product
 from shop.products.routes import brands, categories
 
 
@@ -19,7 +19,7 @@ def AddCart():
         product_id = request.form.get('product_id')
         quantity = request.form.get('quantity')
         colors = request.form.get('colors')
-        product = Addproduct.query.filter_by(id=product_id).first()
+        product = Product.query.filter_by(id=product_id).first()
         if product and quantity and colors and request.method == "POST":
             DictItems = {
                 product_id:

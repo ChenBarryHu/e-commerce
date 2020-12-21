@@ -20,7 +20,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% for brand in brands %}
-                        <a class="dropdown-item" href="{{url_for('get_brand', id=brand.id)}}">{{brand.name}}</a>
+                        <a class="dropdown-item" href="{{url_for('products_by_brand', id=brand.id)}}">{{brand.name}}</a>
                         {% endfor %}
                     </div>
                 </li>
@@ -33,7 +33,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% for category in categories %}
                         <a class="dropdown-item"
-                            href="{{url_for('get_category', id=category.id)}}">{{category.name}}</a>
+                            href="{{url_for('products_by_category', id=category.id)}}">{{category.name}}</a>
                         {% endfor %}
                     </div>
                 </li>

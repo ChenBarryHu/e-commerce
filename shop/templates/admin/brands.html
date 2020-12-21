@@ -19,7 +19,7 @@
             <tr>
                 <td>{{loop.index}}</td>
                 <td>{{brand.name}}</td>
-                <td><a href="{{url_for('management.updatebrand', id=brand.id)}}"
+                <td><a href="{{url_for('management.update_brand', id=brand.id)}}"
                         class="btn btn-sm btn-outline-info">Edit</a></td>
                 <!-- <td><a href="" class="btn btn-sm btn-outline-danger">Delete</a></td> -->
                 <td>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <form action="{{url_for('management.deletebrand', id=brand.id)}}" method="POST">
+                            <form action="{{url_for('management.delete_brand', id=brand.id)}}" method="POST">
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </div>
@@ -61,7 +61,7 @@
             <tr>
                 <td>{{loop.index}}</td>
                 <td>{{category.name}}</td>
-                <td><a href="{{url_for('management.updatecategory', id=category.id)}}"
+                <td><a href="{{url_for('management.update_category', id=category.id)}}"
                         class="btn btn-sm btn-outline-info">Edit</a>
                 </td>
                 <td>
@@ -87,7 +87,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <form action="{{url_for('management.deletecategory', id=category.id)}}" method="POST">
+                            <form action="{{url_for('management.delete_category', id=category.id)}}" method="POST">
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </div>
@@ -101,12 +101,12 @@
     </table>
     {% if brands %}
     <div>
-        <a href="{{url_for('management.addbrand')}}" class="mr-4 btn btn-sm btn-info float-left">Add
+        <a href="{{url_for('management.add_brand')}}" class="mr-4 btn btn-sm btn-info float-left">Add
             brand</a>
     </div>
     {% else %}
     <div>
-        <a href="{{url_for('management.addcat')}}" class="mr-4 btn btn-sm btn-info float-left">Add
+        <a href="{{url_for('management.add_category')}}" class="mr-4 btn btn-sm btn-info float-left">Add
             category</a>
     </div>
     {% endif %}

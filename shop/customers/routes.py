@@ -2,7 +2,7 @@ from flask import render_template, session, request, redirect, url_for, flash, c
 from flask_login import login_required, current_user, login_user, logout_user
 from shop import db, app, photos, bcrypt, login_manager
 from .forms import CustomerRegisterForm, CustomerLoginForm
-from .model import Register, CustomerOrder
+from .model import Customer, CustomerOrder
 import secrets
 import os
 import pdfkit
@@ -46,7 +46,7 @@ def customer_register():
     form = CustomerRegisterForm()
     if form.validate_on_submit():
         hash_password = bcrypt.generate_password_hash(form.password.data)
-        register = Register(
+        customer = Customer(
             name=form.name.data,
             username=form.username.data,
             email=form.email.data,
@@ -57,7 +57,7 @@ def customer_register():
             address=form.address.data,
             zipcode=form.zipcode.data,
         )
-        db.session.add(register)
+        db.session.add(customer)
         flash(f'Welcome {form.name.data} Thank you for registering', 'success')
         db.session.commit()
         return redirect(url_for("login"))
@@ -68,7 +68,7 @@ def customer_register():
 def customerLogin():
     form = CustomerLoginForm()
     if request.method == "POST":
-        user = Register.query.filter_by(email=form.email.data).first()
+        user = Customer.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             flash('You are logged in.', 'success')
@@ -126,7 +126,7 @@ def orders(invoice):
         grandTotal = 0
         subTotal = 0
         customer_id = current_user.id
-        customer = Register.query.filter_by(id=customer_id).first()
+        customer = Customer.query.filter_by(id=customer_id).first()
         orders = CustomerOrder.query.filter_by(
             customer_id=customer_id).order_by(CustomerOrder.id.desc()).first()
         for _key, product in orders.orders.items():
@@ -156,7 +156,7 @@ def get_pdf(invoice):
         subTotal = 0
         customer_id = current_user.id
 
-        customer = Register.query.filter_by(id=customer_id).first()
+        customer = Customer.query.filter_by(id=customer_id).first()
         orders = CustomerOrder.query.filter_by(
             customer_id=customer_id).order_by(CustomerOrder.id.desc()).first()
         for _key, product in orders.orders.items():
