@@ -5,9 +5,9 @@
     {% include '_messages.html' %}
     <div class="row">
         <div class="col-md-12">
-            Invoice: {{orders.invoice}}
+            Invoice: {{order.invoice}}
             <br>
-            Status: {{orders.status}}
+            Status: {{order.status}}
             <br>
             Customer name: {{customer.name}}
             <br>
@@ -27,13 +27,13 @@
                     <th>Subtotal</th>
                 </thead>
                 <tbody>
-                    {% for key, product in orders.orders.items() %}
+                    {% for key, product in order.purchased_items.items() %}
                     {% set discount = "%0.2f" | format((product.discount/100) * product.price|float *
                     product.quantity|int) %}
                     <tr>
                         <td>{{loop.index}}</td>
                         <td>{{product.name}}</td>
-                        <form action="{{url_for('updatecart', code=key)}}" method="post">
+                        <form action="{{url_for('update_cart', code=key)}}" method="post">
                             <td>{{product.color|capitalize}}</td>
                             <td>{{product.price}}</td>
                             <td>
@@ -56,12 +56,12 @@
                     <tr>
                         <td></td>
                         <td>
-                            {% if orders.status == 'Pending' %}
+                            {% if order.status == 'Pending' %}
 
                             <form action="{{url_for('payment')}}" method="POST">
                                 {% set amount = grandTotal.replace('.','') %}
                                 <input type="hidden" name="amount" value="{{amount}}">
-                                <input type="hidden" name="invoice" value="{{orders.invoice}}">
+                                <input type="hidden" name="invoice" value="{{order.invoice}}">
                                 <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                     data-key="pk_test_51I0C4HIkH6gk0430apoX6NH50LHEQZ5F1djym6q6z3Tkz8BsdolyHepme6ZWQSCNnCzz7EBLFeyWkYtcf1svh7s3005HvTSZsM"
                                     data-name="Shichen's Shop" data-description="your order" data-amount="{{amount}}"
@@ -78,8 +78,8 @@
                             <h5>Grand Total: ${{grandTotal}}</h5>
                         </td>
                         <td>
-                            {% if orders.status == 'Paid' %}
-                            <form action="{{url_for('get_pdf', invoice=orders.invoice)}}" method="POST">
+                            {% if order.status == 'Paid' %}
+                            <form action="{{url_for('generate_invoice_pdf', invoice=order.invoice)}}" method="POST">
                                 <button type="submit" class="mr-4 btn btn-sm btn-info float-right">
                                     Download receipt
                                 </button>

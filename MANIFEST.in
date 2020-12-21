@@ -1,0 +1,4 @@
+include shop/myshop.db
+graft shop/static
+graft shop/templates
+global-exclude *.pyc
